@@ -71,8 +71,7 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     func startScan() {
         self.peripherals = []
         if self.peripheralManager?.isAdvertising == true {
-            self.peripheralManager.stopAdvertising()
-            print("Advertising Stopped")
+            self.stopAdvertising()
         }
         // start scanning for all devices
         centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
@@ -115,7 +114,7 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
             self.cancelScan();
         }
         // in case the service has already been added
-        self.peripheralManager.removeAllServices()
+        self.peripheralManager?.removeAllServices()
         
         self.peripheralManager?.add(self.myService)
         self.peripheralManager?.startAdvertising([CBAdvertisementDataLocalNameKey: "BLEFromIOS",
@@ -124,7 +123,7 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     }
     
     func stopAdvertising() {
-        self.peripheralManager.stopAdvertising()
+        self.peripheralManager?.stopAdvertising()
         print("peripheral stopped advertising")
     }
     
