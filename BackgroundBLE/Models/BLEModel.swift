@@ -59,8 +59,14 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
         
         self.myService = CBMutableService(type: self.myUUID, primary: true)
         self.myService.characteristics = [self.myCharacteristic]
-        self.peripheralManager?.add(self.myService)
         
+        super.init()
+
+        // configure central mode
+        self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+        // configure peripheral mode
+        self.centralManager = CBCentralManager(delegate: self, queue: nil)
+        print("initiated all variables")
     }
     
     func startScan() {
