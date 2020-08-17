@@ -10,15 +10,6 @@ import Foundation
 import CoreBluetooth
 
 class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate {
-    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
-        if (peripheral.state == CBManagerState.poweredOn) {
-            print("Peripheral on")
-            //self.startAdvertising()
-        } else {
-            print("peripheral is connected")
-        }
-    }
-    
     
     var centralManager: CBCentralManager!
     var peripherals: [CBPeripheral] = []
@@ -126,5 +117,27 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
         self.peripheralManager?.stopAdvertising()
         print("peripheral stopped advertising")
     }
+    
+    func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
+        if error != nil {
+            print(error as Any)
+        } else {
+            print ("started advertising")
+        }
+        
+    }
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        if (peripheral.state == CBManagerState.poweredOn) {
+            print("Peripheral on")
+            // in case the service has already been added
+            self.peripheralManager?.removeAllServices()
+            
+            self.peripheralManager?.add(self.myService)
+
+        } else {
+            print("peripheral is connected")
+        }
+    }
+    
     
 }
