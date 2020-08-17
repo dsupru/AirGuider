@@ -9,7 +9,7 @@
 import Foundation
 import CoreBluetooth
 
-class BLEModel {
+class BLEModel : CBCentralManagerDelegate {
     
     var centralManager: CBCentralManager!
     var peripherals: [CBPeripheral] = []
@@ -30,7 +30,7 @@ class BLEModel {
         
         self.myService = CBMutableService(type: self.myUUID, primary: true)
         self.myService.characteristics = [self.myCharacteristic]
-        self.peripheralManager.add(self.myService)
+        self.peripheralManager?.add(self.myService)
         
     }
     
@@ -45,6 +45,19 @@ class BLEModel {
         self.centralManager?.stopScan()
         print("Scan Stopped")
         print("Number of Peripherals Found: \(peripherals.count)")
+    }
+    
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        switch central.state {
+        case CBManagerState.poweredOn:
+            print("Bluetooth is powered on")
+        case CBManagerState.unauthorized:
+            print("Unauthorized for BLE")
+        case CBManagerState.poweredOff:
+            print("Powered Off from central manager")
+        default:
+            print("other error encountered")
+        }
     }
     
     func startAdvertising() {
