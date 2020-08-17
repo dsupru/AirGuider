@@ -71,8 +71,16 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     
     func startScan() {
         self.peripherals = []
+        if self.peripheralManager?.isAdvertising == true {
+            self.peripheralManager.stopAdvertising()
+            print("Advertising Stopped")
+        }
         // start scanning for all devices
-        centralManager?.scanForPeripherals(withServices: nil, options: nil)
+        centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
+        print("started the scan")
+        Timer.scheduledTimer(withTimeInterval: 10, repeats: false) {_ in
+            self.cancelScan()
+        }
         // TODO add a timer
     }
     
