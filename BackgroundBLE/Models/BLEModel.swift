@@ -27,11 +27,31 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     var myUUID: CBUUID
     var myService: CBMutableService
     var myCharacteristic: CBMutableCharacteristic
-    
-    init() {
-        // configure central mode
-        self.peripheralManager = CBPeripheralManager(delegate: nil, queue: nil)
-        self.centralManager = CBCentralManager(delegate: nil, queue: nil)
+    var centralManagerIsOn: Bool {
+        get {
+            return self.centralManager?.isScanning == true
+        }
+        set (togglePress){
+            if togglePress == true {
+                self.startScan()
+            } else {
+                self.cancelScan()
+            }
+        }
+    }
+    var peripheralManagerIsOn: Bool {
+        get {
+            return self.peripheralManager?.isAdvertising == true
+        }
+        set (togglePress){
+            if togglePress == true {
+                self.startAdvertising()
+            } else {
+                self.stopAdvertising()
+            }
+        }
+    }
+    override init() {
         
         // configure peripheral mode
         self.myUUID = CBUUID(string: "71DA3FD1-7E10-41C1-B16F-4430B506CDE7")
