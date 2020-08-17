@@ -10,14 +10,20 @@ import Foundation
 import CoreBluetooth
 
 class BLEModel {
-    var PeripheralManager: CBPeripheralManager!
-    var CentralManager: CBCentralManager!
+    var peripheralManager: CBPeripheralManager!
+    var centralManager: CBCentralManager!
     var peripherals: [CBPeripheral] = []
     
     
     init() {
-        self.PeripheralManager = CBPeripheralManager(delegate: nil, queue: nil)
-        self.CentralManager = CBCentralManager(delegate: nil, queue: nil)
+        self.peripheralManager = CBPeripheralManager(delegate: nil, queue: nil)
+        self.centralManager = CBCentralManager(delegate: nil, queue: nil)
+    }
+    
+    func cancelScan() {
+        self.centralManager?.stopScan()
+        print("Scan Stopped")
+        print("Number of Peripherals Found: \(peripherals.count)")
     }
     
     func peripheralMode() {
