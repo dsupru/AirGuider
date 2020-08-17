@@ -15,7 +15,9 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     var peripherals: [CBPeripheral] = []
     
     var peripheralManager: CBPeripheralManager!
-    var myUUID: CBUUID
+    var myServiceUUID: CBUUID
+    var myCharacteristicUUID: CBUUID
+    
     var myService: CBMutableService
     var myCharacteristic: CBMutableCharacteristic
     var centralManagerIsOn: Bool {
@@ -44,10 +46,12 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     }
     override init() {
         
-        self.myUUID = CBUUID(string: "71DA3FD1-7E10-41C1-B16F-4430B506CDE7")
-        self.myCharacteristic = CBMutableCharacteristic(type: self.myUUID, properties: [.notify, .read], value: nil, permissions: [.readable])
+        self.myServiceUUID = CBUUID(string: "71DA3FD1-7E10-41C1-B16F-4430B506CDE7")
+        self.myCharacteristicUUID = CBUUID(string: "523D0E52-01CE-4AA7-A525-E99AC9FE2AC6")
         
-        self.myService = CBMutableService(type: self.myUUID, primary: true)
+        self.myCharacteristic = CBMutableCharacteristic(type: self.myCharacteristicUUID, properties: [.notify, .read], value: nil, permissions: [.readable])
+        
+        self.myService = CBMutableService(type: self.myServiceUUID, primary: true)
         self.myService.characteristics = [self.myCharacteristic]
         
         super.init()
@@ -104,13 +108,13 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
         if self.centralManager?.isScanning == true {
             self.cancelScan();
         }
-        // in case the service has already been added
-        self.peripheralManager?.removeAllServices()
-        
-        self.peripheralManager?.add(self.myService)
-        self.peripheralManager?.startAdvertising([CBAdvertisementDataLocalNameKey: "BLEFromIOS",
-                                                  CBAdvertisementDataServiceUUIDsKey: [self.myUUID]])
-        print("start advertising")
+        if self.peripheralManager?.isAdvertising == true {
+            return;
+        } else {
+            self.peripheralManager?.startAdvertising([CBAdvertisementDataLocalNameKey: "BLEFromIOS",
+                                                      CBAdvertisementDataServiceUUIDsKey: [self.myServiceUUID]])
+            print("start advertising")
+        }
     }
     
     func stopAdvertising() {
