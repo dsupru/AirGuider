@@ -9,7 +9,16 @@
 import Foundation
 import CoreBluetooth
 
-class BLEModel : CBCentralManagerDelegate {
+class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate {
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        if (peripheral.state == CBManagerState.poweredOn) {
+            print("Peripheral on")
+            //self.startAdvertising()
+        } else {
+            print("peripheral is connected")
+        }
+    }
+    
     
     var centralManager: CBCentralManager!
     var peripherals: [CBPeripheral] = []
