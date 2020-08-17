@@ -114,6 +114,18 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
         if self.centralManager?.isScanning == true {
             self.cancelScan();
         }
+        // in case the service has already been added
+        self.peripheralManager.removeAllServices()
+        
+        self.peripheralManager?.add(self.myService)
+        self.peripheralManager?.startAdvertising([CBAdvertisementDataLocalNameKey: "BLEFromIOS",
+                                                  CBAdvertisementDataServiceUUIDsKey: [self.myUUID]])
+        print("start advertising")
+    }
+    
+    func stopAdvertising() {
+        self.peripheralManager.stopAdvertising()
+        print("peripheral stopped advertising")
     }
     
 }
