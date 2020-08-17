@@ -20,6 +20,13 @@ class BLEModel {
         self.centralManager = CBCentralManager(delegate: nil, queue: nil)
     }
     
+    func startScan() {
+        self.peripherals = []
+        // start scanning for all devices
+        centralManager?.scanForPeripherals(withServices: nil, options: nil)
+        // TODO add a timer
+    }
+    
     func cancelScan() {
         self.centralManager?.stopScan()
         print("Scan Stopped")
