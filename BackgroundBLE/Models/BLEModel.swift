@@ -47,8 +47,11 @@ class BLEModel {
         print("Number of Peripherals Found: \(peripherals.count)")
     }
     
-    func peripheralMode() {
-        
+    func startAdvertising() {
+        // TODO see if first need to stop cental mode
+        if self.centralManager?.isScanning == true {
+            self.cancelScan();
+        }
     }
     
 }
