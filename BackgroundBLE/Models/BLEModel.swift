@@ -102,7 +102,14 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
             print("other error encountered")
         }
     }
-    
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral,advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        
+        self.peripherals.append(peripheral)
+        print("Found new pheripheral devices with services")
+        print("Peripheral name: \(String(describing: peripheral.name))")
+        print("**********************************")
+        print ("Advertisement Data : \(advertisementData)")
+    }
     func startAdvertising() {
         // TODO see if first need to stop cental mode
         if self.centralManager?.isScanning == true {
