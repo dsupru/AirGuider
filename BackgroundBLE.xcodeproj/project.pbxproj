@@ -13,6 +13,7 @@
 		4163824524EA09F20059C45A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4163824424EA09F20059C45A /* Assets.xcassets */; };
 		4163824824EA09F20059C45A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4163824724EA09F20059C45A /* Preview Assets.xcassets */; };
 		4163824B24EA09F20059C45A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4163824924EA09F20059C45A /* LaunchScreen.storyboard */; };
+		4163827C24EA17E50059C45A /* BLEController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4163827B24EA17E50059C45A /* BLEController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		4163824724EA09F20059C45A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4163824A24EA09F20059C45A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4163824C24EA09F20059C45A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4163827B24EA17E50059C45A /* BLEController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		4163823D24EA09F10059C45A /* BackgroundBLE */ = {
 			isa = PBXGroup;
 			children = (
+				4163827A24EA17C60059C45A /* Models */,
 				4163823E24EA09F10059C45A /* AppDelegate.swift */,
 				4163824024EA09F10059C45A /* SceneDelegate.swift */,
 				4163824224EA09F10059C45A /* ContentView.swift */,
@@ -73,6 +76,14 @@
 				4163824724EA09F20059C45A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4163827A24EA17C60059C45A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4163827B24EA17E50059C45A /* BLEController.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4163823F24EA09F10059C45A /* AppDelegate.swift in Sources */,
+				4163827C24EA17E50059C45A /* BLEController.swift in Sources */,
 				4163824124EA09F10059C45A /* SceneDelegate.swift in Sources */,
 				4163824324EA09F10059C45A /* ContentView.swift in Sources */,
 			);
