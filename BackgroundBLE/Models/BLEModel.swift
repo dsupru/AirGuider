@@ -37,11 +37,12 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
         get {
             return self.centralManager?.isScanning == true
         }
-        set (togglePress){
-            if togglePress == true {
+        set (toggleCentral){
+            if toggleCentral == true {
                 self.startScan()
             } else {
                 self.cancelScan()
+                peripherals = []
             }
         }
     }
