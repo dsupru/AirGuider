@@ -9,10 +9,19 @@
 import Foundation
 import CoreBluetooth
 
-class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate {
+// Global because the View doesn't update
+
+struct PeripheralDescr: Hashable {
+    static func == (lhs: PeripheralDescr, rhs: PeripheralDescr) -> Bool {
+        return lhs.peripheral == rhs.peripheral
+    }
     
-    var centralManager: CBCentralManager!
-    var peripherals: [CBPeripheral] = []
+    var name : String
+    let services : [CBUUID]
+    var peripheral : CBPeripheral
+}
+
+class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate, ObservableObject {
     
     var peripheralManager: CBPeripheralManager!
     var myServiceUUID: CBUUID
