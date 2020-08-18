@@ -15,7 +15,18 @@ struct ModeSelectView: View {
     var body: some View {
         VStack {
             List(myBLEManager.peripherals, id:\.self) { peripheral in
-                Text("\(peripheral.name)")
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("Name: \(peripheral.name)")
+                        Text("Unique ID: \(peripheral.identifier)")
+                            .font(.footnote)
+                            .foregroundColor(Color.red)
+                    }
+                    Spacer()
+                    Text(/*@START_MENU_TOKEN@*/"Placeholder"/*@END_MENU_TOKEN@*/)
+                        .multilineTextAlignment(.trailing)
+                }
+                
             }
 
             Group {
