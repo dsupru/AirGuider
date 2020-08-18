@@ -12,8 +12,9 @@ import CoreBluetooth
 // Global because the View doesn't update
 
 struct PeripheralDescr: Hashable {
+    // using identifier as it should be unique
     static func == (lhs: PeripheralDescr, rhs: PeripheralDescr) -> Bool {
-        return lhs.peripheral == rhs.peripheral
+        return lhs.peripheral.identifier == rhs.peripheral.identifier
     }
     
     var name : String
