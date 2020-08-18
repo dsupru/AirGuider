@@ -23,7 +23,11 @@ struct PeripheralDescr: Hashable {
 
 class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate, ObservableObject {
     
+    var centralManager: CBCentralManager!
     var peripheralManager: CBPeripheralManager!
+    // array of peripheral scanned in central mode
+    @Published var peripherals: [PeripheralDescr] = []
+    
     var myServiceUUID: CBUUID
     var myCharacteristicUUID: CBUUID
     
@@ -73,17 +77,14 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     }
     
     func startScan() {
-        self.peripherals = []
+        peripherals = []
         if self.peripheralManager?.isAdvertising == true {
             self.stopAdvertising()
         }
         // start scanning for all devices
-        centralManager?.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
+        // to scan in the background, need to specify serviceUUID
+        centralManager?.scanForPeripherals(withServices: [self.myServiceUUID], options: [CBCentralManagerScanOptionAllowDuplicatesKey:false])
         print("started the scan")
-        Timer.scheduledTimer(withTimeInterval: 10, repeats: false) {_ in
-            self.cancelScan()
-        }
-        // TODO add a timer
     }
     
     func cancelScan() {

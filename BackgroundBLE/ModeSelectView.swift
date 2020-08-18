@@ -7,10 +7,33 @@
 //
 
 import SwiftUI
+import CoreBluetooth
 
 struct ModeSelectView: View {
+    @ObservedObject private var myBLEManager: BLEModel = BLEModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            List(myBLEManager.peripherals, id:\.self) { peripheral in
+                Text("\(peripheral.name)")
+            }
+
+            Group {
+                HStack {
+                    Toggle(isOn: $myBLEManager.peripheralManagerIsOn) {
+                        Text("Peripheral Mode")
+                    }
+                }
+                HStack {
+                    Toggle(isOn: $myBLEManager.centralManagerIsOn) {
+                        Text("Central Mode")
+                    }
+                }
+            }
+            .padding(.bottom)
+            
+        }
+        .padding(.horizontal)
     }
 }
 
