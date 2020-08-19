@@ -9,11 +9,21 @@
 import SwiftUI
 import CoreBluetooth
 
+enum BLEMode {
+    case central
+    case peripheral
+}
+
 struct ModeSelectView: View {
     @ObservedObject private var myBLEManager: BLEModel = BLEModel()
-    
+    //@State var centralSinkData = receivedASCIIData as String
+    @State var message : String = "Data Delivered"
     var body: some View {
         VStack {
+            Text("List Of Discovered Peripherals")
+                .font(.headline)
+                .fontWeight(.medium)
+                .multilineTextAlignment(.center)
             List(myBLEManager.peripherals, id:\.self) { peripheral in
                 HStack {
                     VStack(alignment: .leading) {
@@ -23,12 +33,19 @@ struct ModeSelectView: View {
                             .foregroundColor(Color.red)
                     }
                     Spacer()
-                    Text(/*@START_MENU_TOKEN@*/"Placeholder"/*@END_MENU_TOKEN@*/)
+                    Text("connect")
                         .multilineTextAlignment(.trailing)
+                        .onTapGesture {
+                            self.myBLEManager.connect(peripheral)
+//                            update connection
+                    }
                 }
-                
             }
-
+            Text(self.message)
+                .onTapGesture {
+                    self.message = self.myBLEManager.connPeripheralDelegate.receivedASCIIData as String
+            }
+                
             Group {
                 HStack {
                     Toggle(isOn: $myBLEManager.peripheralManagerIsOn) {
@@ -38,6 +55,7 @@ struct ModeSelectView: View {
                 HStack {
                     Toggle(isOn: $myBLEManager.centralManagerIsOn) {
                         Text("Central Mode")
+                        
                     }
                 }
             }
