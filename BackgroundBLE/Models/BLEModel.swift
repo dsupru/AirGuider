@@ -13,7 +13,7 @@ import UIKit
 struct PeripheralDescr: Hashable {
     // using identifier as it should be unique
     static func == (lhs: PeripheralDescr, rhs: PeripheralDescr) -> Bool {
-        return lhs.peripheral.identifier == rhs.peripheral.identifier
+        return lhs.peripheral == rhs.peripheral
     }
     
     var name : String
@@ -43,8 +43,6 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     
     var myService: CBMutableService
     var myCharacteristic: CBMutableCharacteristic
-    // Tim used to communicate counts.
-//    var timedMessage = Timer()
     var centralManagerIsOn: Bool {
         get {
             if self.centralManager != nil {
@@ -80,7 +78,6 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
                 // destroys peripheral object
                 // will implicitly call Cancel connection on Central
                 self.peripheralManager = nil
-                //self.stopAdvertising()
             }
         }
     }
@@ -97,7 +94,6 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
         self.connPeripheralDelegate = ConnectionToPeripheral(service: myServiceUUID, characteristic: myCharacteristicUUID)
         super.init()
 
-        // configure central mode
     }
     
     func startScan() {
@@ -166,10 +162,7 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     }
     // MARK: -- Handlers for Peripheral Events
     func startAdvertising() {
-        // TODO see if first need to stop cental mode
-//        if self.centralManager?.isScanning == true {
-//            self.cancelScan();
-//        }
+
         if self.peripheralManager?.isAdvertising == true {
             return;
         } else {
@@ -211,17 +204,10 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     func peripheralManager(_ peripheral: CBPeripheralManager, central : CBCentral, didSubscribeTo characteristic : CBCharacteristic) {
         print("Central substcribed to characteristic \(characteristic)")
         timer.eventHandler = {
-            let cafe = "hello".data(using: .ascii)
-            _ = peripheral.updateValue(cafe!, for: self.myCharacteristic, onSubscribedCentrals: nil)
+            self.scheduleUpdates()
         }
         timer.resume()
-//        DispatchQueue.global(qos: .background).async {
-//            Timer.scheduledTimer(withTimeInterval: 3, repeats: true) { (Timer) in
-//                self.scheduleUpdates(peripheral)
-//            }
-//        }
-        
-        self.scheduleUpdates(peripheral)
+    
     }
 
     private func tryReconnect(_ central: CBCentralManager, to peripheral: CBPeripheral) {
@@ -232,8 +218,8 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
             }
             
             self.timerToReconnect?.invalidate()
-            self.timerToReconnect = Timer.scheduledTimer(withTimeInterval: TimeInterval(2), repeats: false) { _ in
-                central.connect(peripheral, options: [:])
+            self.timerToReconnect = Timer.scheduledTimer(withTimeInterval: TimeInterval(2), repeats: true) { _ in
+                self.scheduleUpdates()
                 
                 UIApplication.shared.endBackgroundTask(self.backgroundTaskId)
                 self.backgroundTaskId = .invalid
@@ -247,9 +233,8 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         self.tryReconnect(central, to: peripheral)
     }
-    func scheduleUpdates(_ peripheral: CBPeripheralManager) {
-//        let hello : NSData = "hello"
+    func scheduleUpdates() {
         let cafe = "hello".data(using: .ascii)
-        _ = peripheral.updateValue(cafe!, for: self.myCharacteristic, onSubscribedCentrals: nil)
+        _ = peripheralManager.updateValue(cafe!, for: self.myCharacteristic, onSubscribedCentrals: nil)
     }
 }

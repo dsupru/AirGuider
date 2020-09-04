@@ -17,7 +17,7 @@ enum BLEMode {
 struct ModeSelectView: View {
     @ObservedObject private var myBLEManager: BLEModel = BLEModel()
     //@State var centralSinkData = receivedASCIIData as String
-    @State var message : String = "Data Delivered"
+    @State var message : String = "Data ="
     var body: some View {
         VStack {
             Text("List Of Discovered Peripherals")

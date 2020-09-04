@@ -91,7 +91,7 @@ class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject 
             else { return }
         
         receivedASCIIData = ASCIIstring
-        print("Value Recieved: \((receivedASCIIData as String))")
+        print("Value Received: \((receivedASCIIData as String))")
     }
     
     // Tells the delegate that the peripheral found descriptors for a characteristic.
