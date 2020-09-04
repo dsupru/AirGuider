@@ -1,0 +1,1 @@
+A Hobby, first-time iOS project to enable bluetooth communication between 2 devices.
