@@ -11,8 +11,9 @@ import CoreBluetooth
 
 class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject {
     var rxDataCharacteristic : CBCharacteristic?
+    var txDataCharacteristic : CBCharacteristic?
     var myServicesUUID = CBUUID()
-    var myCharacteristicsUUID = CBUUID()
+    var myCharacteristicsUUID : CBUUID
     @Published var receivedASCIIData = NSString()
 
     init(service: CBUUID, characteristic: CBUUID) {
@@ -33,12 +34,13 @@ class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject 
         }
     
         guard let services = peripheral.services else {
+            print("AAAHHHH!!!")
             return
         }
         
         //Used to discover all the
         for service in services {
-            peripheral.discoverCharacteristics(nil, for: service)
+            peripheral.discoverCharacteristics([self.myCharacteristicsUUID], for: service)
         }
         print("Discovered Services: \(services)")
     }
@@ -62,15 +64,15 @@ class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject 
         
         print("Found \(characteristics.count) characteristics!")
         
-        for characteristic in characteristics {
+        service.characteristics?.forEach { characteristic in
             //looks for the right characteristic, always right in our case
             if characteristic.uuid.isEqual(myCharacteristicsUUID)  {
                 self.rxDataCharacteristic = characteristic
                 //Once found, subscribe to the this particular characteristic...
-                peripheral.setNotifyValue(true, for: rxDataCharacteristic!)
+                //peripheral.setNotifyValue(true, for: rxDataCharacteristic!)
                 // We can return after calling CBPeripheral.setNotifyValue because CBPeripheralDelegate's
                 // didUpdateNotificationStateForCharacteristic method will be called automatically
-                peripheral.readValue(for: characteristic)
+                //peripheral.readValue(for: characteristic)
                 print("Rx Characteristic: \(characteristic.uuid)")
             }
             // To add write capability, add another characteristic
@@ -128,4 +130,5 @@ class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject 
             print ("Subscribed. Notification has begun for: \(characteristic.uuid)")
         }
     }
+    
 }

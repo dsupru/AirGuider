@@ -31,7 +31,7 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     @Published var connPeripheralDelegate : ConnectionToPeripheral
     // array of peripheral scanned in central mode
     @Published var peripherals : [PeripheralDescr] = []
-    @Published var connectedPeripheralID : Int = -1
+    @Published var connectedPeripheralID = [UUID]()
     var timer = RepeatingTimer(timeInterval: 5)
     var timerToReconnect : Timer?
     // UUIDs of service and characteristic -- hardcoded
@@ -87,7 +87,7 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
         self.myServiceUUID = CBUUID(string: "71DA3FD1-7E10-41C1-B16F-4430B506CDE7")
         self.myCharacteristicUUID = CBUUID(string: "523D0E52-01CE-4AA7-A525-E99AC9FE2AC6")
         
-        self.myCharacteristic = CBMutableCharacteristic(type: self.myCharacteristicUUID, properties: [.notify, .read], value: nil, permissions: [.readable])
+        self.myCharacteristic = CBMutableCharacteristic(type: self.myCharacteristicUUID, properties: [.notify, .read, .write], value: nil, permissions: [.readable, .writeable])
         
         self.myService = CBMutableService(type: self.myServiceUUID, primary: true)
         self.myService.characteristics = [self.myCharacteristic]
@@ -142,6 +142,7 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     // Called from UI on tap
     func connect(_ peripheral: PeripheralDescr) {
         self.centralManager?.connect(peripheral.peripheral, options: nil)
+        self.connectedPeripheralID.append(peripheral.identifier)
     }
     
     // Called when connection was successfull
@@ -203,11 +204,13 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
     
     func peripheralManager(_ peripheral: CBPeripheralManager, central : CBCentral, didSubscribeTo characteristic : CBCharacteristic) {
         print("Central substcribed to characteristic \(characteristic)")
-        timer.eventHandler = {
-            self.scheduleUpdates()
-        }
-        timer.resume()
     
+        
+    }
+    func peripheralManager(_ peripheral: CBPeripheralManager,
+                          didReceiveWrite requests: [CBATTRequest]) {
+      guard let request = requests.first, let data = request.value else { return }
+      let message = String(decoding: data, as: UTF8.self)
     }
 
     private func tryReconnect(_ central: CBCentralManager, to peripheral: CBPeripheral) {
@@ -217,13 +220,6 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
                 self.backgroundTaskId = .invalid
             }
             
-            self.timerToReconnect?.invalidate()
-            self.timerToReconnect = Timer.scheduledTimer(withTimeInterval: TimeInterval(2), repeats: true) { _ in
-                self.scheduleUpdates()
-                
-                UIApplication.shared.endBackgroundTask(self.backgroundTaskId)
-                self.backgroundTaskId = .invalid
-            }
         }
     }
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
@@ -232,9 +228,5 @@ class BLEModel : NSObject, CBCentralManagerDelegate, CBPeripheralManagerDelegate
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         self.tryReconnect(central, to: peripheral)
-    }
-    func scheduleUpdates() {
-        let cafe = "hello".data(using: .ascii)
-        _ = peripheralManager.updateValue(cafe!, for: self.myCharacteristic, onSubscribedCentrals: nil)
     }
 }
