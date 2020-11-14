@@ -14,7 +14,11 @@ class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject 
     var myServicesUUID = CBUUID()
     var myCharacteristicsUUID = CBUUID()
     @Published var receivedASCIIData = NSString()
-
+    @Published var directions : Dictionary<String, String> = [
+        "Coordinates":"",
+        "Runway Letter": "Unassigned"
+    ]
+    
     init(service: CBUUID, characteristic: CBUUID) {
         self.myServicesUUID = service
         self.myCharacteristicsUUID = characteristic
@@ -91,6 +95,14 @@ class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject 
             else { return }
         
         receivedASCIIData = ASCIIstring
+        let recStr = receivedASCIIData as String
+        let items = recStr.components(separatedBy: ":")
+        if items.contains("Runway") {
+            self.directions["Runway Letter"] = items[1]
+            print(self.directions)
+        } else if items.contains("Coordinates") {
+            self.directions["Coordinates"] = items[1]
+        }
         print("Value Received: \((receivedASCIIData as String))")
     }
     
@@ -113,19 +125,8 @@ class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject 
         }
     }
     
-    
-    func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
-        print("*******************************************************")
-        
-        if (error != nil) {
-            print("Error changing notification state:\(String(describing: error?.localizedDescription))")
-            
-        } else {
-            print("Characteristic's value subscribed")
-        }
-        
-        if (characteristic.isNotifying) {
-            print ("Subscribed. Notification has begun for: \(characteristic.uuid)")
-        }
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        print("did write val for characteristic")
     }
+    
 }

@@ -18,51 +18,42 @@ struct ModeSelectView: View {
     @ObservedObject private var myBLEManager: BLEModel = BLEModel()
     //@State var centralSinkData = receivedASCIIData as String
     @State var message : String = "Data ="
+    @State var show_selection : Bool = true
+    @State var show_airport_view : Bool = false
     var body: some View {
-        VStack {
-            Text("List Of Discovered Peripherals")
-                .font(.headline)
-                .fontWeight(.medium)
-                .multilineTextAlignment(.center)
-            List(myBLEManager.peripherals, id:\.self) { peripheral in
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Name: \(peripheral.name)")
-                        Text("Unique ID: \(peripheral.identifier)")
-                            .font(.footnote)
-                            .foregroundColor(Color.red)
-                    }
-                    Spacer()
-                    Text("connect")
-                        .multilineTextAlignment(.trailing)
-                        .onTapGesture {
-                            self.myBLEManager.connect(peripheral)
-//                            update connection
-                    }
-                }
+        if show_selection == false {
+            if show_airport_view {
+                AirPortView(bleManager: myBLEManager)
+            } else {
+                PlaneView(bleManager: myBLEManager)
             }
-            Text(self.message)
-                .onTapGesture {
-                    self.message = self.myBLEManager.connPeripheralDelegate.receivedASCIIData as String
-            }
-                
-            Group {
-                HStack {
-                    Toggle(isOn: $myBLEManager.peripheralManagerIsOn) {
-                        Text("Peripheral Mode")
-                    }
-                }
-                HStack {
-                    Toggle(isOn: $myBLEManager.centralManagerIsOn) {
-                        Text("Central Mode")
+        } else {
+                VStack {
+                    Text("Choose Operations Mode")
+                        .baselineOffset(15)
+                        .bold()
+                        .accentColor(.blue)
                         
-                    }
+                    Image("airport")
+                        .resizable()
+                        .scaledToFit()
+                        .onTapGesture(perform: {
+                            myBLEManager.peripheralManagerIsOn = true
+                            show_selection = false
+                            show_airport_view = true
+                        })
+                        .padding(.all)
+                    Image("airplane")
+                        .resizable()
+                        .scaledToFit()
+                        .onTapGesture(perform: {
+                            myBLEManager.centralManagerIsOn = true
+                            show_selection = false
+                        })
+                        .padding(.all, 56.0)
+                    
                 }
-            }
-            .padding(.bottom)
-            
         }
-        .padding(.horizontal)
     }
 }
 
