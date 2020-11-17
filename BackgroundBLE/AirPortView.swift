@@ -13,8 +13,7 @@ struct AirPortView: View {
     @ObservedObject private var myBLEManager: BLEModel
     @State var message : String = "A5:B6:R3 -- A:1N:7"
     @State var planeSelected : CBCentral?
-    var planes : [String] = ["Boeing 767", "Antonov An-158",
-    "Airbus A350", "Airbus A330"]
+
     @State var centralToNameDictionary :Dictionary<CBCentral, String> = [:]
     init(bleManager : BLEModel) {
         self.myBLEManager = bleManager
@@ -27,7 +26,6 @@ struct AirPortView: View {
                 .fontWeight(.medium)
                 .multilineTextAlignment(.center)
             List(self.myBLEManager.subscribedCentrals, id:\.self) { central in
-                let plane_name = planes.randomElement()!
                 VStack {
                     HStack {
                         Image("small-airplane")
@@ -35,7 +33,7 @@ struct AirPortView: View {
                             .frame(width: 50.0, height: 50.0)
                             .scaledToFit()
                             .padding(.all)
-                        Text("\(plane_name)")
+                        Text("\(self.myBLEManager.plane_name)")
                         Text("Unique ID: \(central.identifier)")
                             .font(.footnote)
                             .foregroundColor(Color.red)

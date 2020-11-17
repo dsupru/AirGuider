@@ -10,7 +10,6 @@ import SwiftUI
 
 struct PlaneView: View {
     @ObservedObject private var myBLEManager: BLEModel
-    @State var message : String = "A5:B6:R3 -- A:1N:7"
     @ObservedObject var connManager : ConnectionToPeripheral
     init(bleManager : BLEModel) {
         self.myBLEManager = bleManager
@@ -61,7 +60,7 @@ struct PlaneView: View {
             VStack(alignment: .leading, spacing: 0.0) {
                 HStack {
                     Text("Coordinates:")
-                    Text(self.connManager.directions["Coordinates"]!)
+                    Text(self.connManager.directions["Coordinates"] ?? "Unnasigned")
                 }
                 HStack {
                     Text("Runway Letter:")

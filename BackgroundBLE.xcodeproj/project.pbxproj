@@ -19,6 +19,8 @@
 		416EC95F24EC200C004C246A /* UtilityFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416EC95E24EC200C004C246A /* UtilityFunctions.swift */; };
 		416EC96124ECB19E004C246A /* ConnectionToPeripheralDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416EC96024ECB19E004C246A /* ConnectionToPeripheralDelegate.swift */; };
 		416EC96524EE358B004C246A /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 416EC96424EE358B004C246A /* RepeatingTimer.swift */; };
+		41734620255F36F300C0AEDF /* AirPortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4173461F255F36F300C0AEDF /* AirPortView.swift */; };
+		41734623255F37B100C0AEDF /* PlaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41734622255F37B100C0AEDF /* PlaneView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		416EC95E24EC200C004C246A /* UtilityFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityFunctions.swift; sourceTree = "<group>"; };
 		416EC96024ECB19E004C246A /* ConnectionToPeripheralDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionToPeripheralDelegate.swift; sourceTree = "<group>"; };
 		416EC96424EE358B004C246A /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
+		4173461F255F36F300C0AEDF /* AirPortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AirPortView.swift; sourceTree = "<group>"; };
+		41734622255F37B100C0AEDF /* PlaneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +79,8 @@
 				4163824024EA09F10059C45A /* SceneDelegate.swift */,
 				4163824224EA09F10059C45A /* ContentView.swift */,
 				4163828124EA3C190059C45A /* ModeSelectView.swift */,
+				41734622255F37B100C0AEDF /* PlaneView.swift */,
+				4173461F255F36F300C0AEDF /* AirPortView.swift */,
 				4163827D24EA19F40059C45A /* MainView.swift */,
 				4163824424EA09F20059C45A /* Assets.xcassets */,
 				4163824924EA09F20059C45A /* LaunchScreen.storyboard */,
@@ -182,6 +188,8 @@
 			files = (
 				4163823F24EA09F10059C45A /* AppDelegate.swift in Sources */,
 				416EC96124ECB19E004C246A /* ConnectionToPeripheralDelegate.swift in Sources */,
+				41734623255F37B100C0AEDF /* PlaneView.swift in Sources */,
+				41734620255F36F300C0AEDF /* AirPortView.swift in Sources */,
 				4163827C24EA17E50059C45A /* BLEModel.swift in Sources */,
 				4163824124EA09F10059C45A /* SceneDelegate.swift in Sources */,
 				416EC96524EE358B004C246A /* RepeatingTimer.swift in Sources */,

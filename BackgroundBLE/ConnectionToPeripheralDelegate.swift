@@ -124,7 +124,9 @@ class ConnectionToPeripheral : NSObject, CBPeripheralDelegate, ObservableObject 
             //print("Tx Value \(String(describing: txCharacteristic?.value))")
         }
     }
-    
+    func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        print("+++++")
+    }
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         print("did write val for characteristic")
     }
