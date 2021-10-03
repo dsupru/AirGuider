@@ -12,6 +12,11 @@ For our prototype we used 2 iOS devices, leveraging Core Bluetooth stack for wir
 Video Demo (using an old video to show multi-device support; had to mask device ids with boxes):
 
 
+
+https://user-images.githubusercontent.com/52057801/135774492-040e2c8f-48b4-4551-99f0-d3318fdd7a4a.mp4
+
+
+
 **Credits:**  
 [Dmytro Suprun](https://github.com/dsupru)  
 Ivy Lin  
