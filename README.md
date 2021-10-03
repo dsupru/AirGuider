@@ -1,6 +1,6 @@
 <h1>Prototype for AirGuider - ATC-to-airplanes visual aid software.</h1>
 
-*Designed for the ACRP's University Design Competition.*
+*Designed as a class project for the ACRP's University Design Competition.*
 
 In our interview with the retired pilot, we identified a problem in communications between the ATC operators and pilots due to the high-pressure nature of the situation and possible difficulties understanding different accents of the language.
 
