@@ -9,7 +9,7 @@ The main idea is for ATC to advertise its presence, playing a role of a "Periphe
 
 For our prototype we used 2 iOS devices, leveraging Core Bluetooth stack for wireless communication.
 
-Video Demo (using an old video to show multi-device support; had to mask device ids with boxes):
+Video Demo (using an old video to show multi-device support):
 
 
 
